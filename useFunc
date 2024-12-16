@@ -1,0 +1,35 @@
+#! /usr/bin/bash
+shopt -s extglob
+
+useFuncSQL(){
+    read -a statement -p ">" 
+    if [[ ${#statement[@]} -ne 2 ]]
+    then 
+    echo Invalid number of arguments.
+    else
+        if [[ ${statement[0]} =~ ^[useUSE]+$ ]]
+        then 
+            if [[ -e ${statement[1]} ]]
+            then
+            cd ${statement[1]}
+            echo Database ${statement[1]} has been selected.
+            else
+            echo Database ${statement[1]} does not exist.
+            fi
+        else
+        echo Invalid syntax
+        fi
+    fi
+}
+
+useFunc(){
+    read -p "Please enter Database name: " name
+    if [[ -e $name ]]
+    then 
+    cd $name 
+    echo Database $name has been selected.
+    else
+    echo Database $name does not exist.
+    fi
+}
+
