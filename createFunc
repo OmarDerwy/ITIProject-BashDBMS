@@ -1,10 +1,5 @@
 #! /usr/bin/bash
 
 createFunc (){
-    if [ $1 = 0 ]
-    then
-        echo you have entered zero
-    else
-        echo failed
-    fi
+    echo $@
 }

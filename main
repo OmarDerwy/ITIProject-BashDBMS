@@ -1,9 +1,14 @@
 #! /usr/bin/bash
-# read -p ">" first second third
-# echo first element : ${arr[0]}
-# echo second element: ${arr[1]}
-# echo third element: ${arr[2]}
-# echo fourth element: ${arr[3]}
+
 source ./createFunc
 
-createFunc 0
+read -p "> " -a input
+
+case ${input[0]} in
+"CREATE")
+    createFunc ${input[@]:1}
+    ;;
+"USE")
+    useFunc ${input[@]:1}
+    ;;
+esac
