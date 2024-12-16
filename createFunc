@@ -2,10 +2,10 @@
 source ./createDatabaseFunc
 source ./createTableFunc
 createFunc (){
-    if [ $1 = "DATABASE" ]
+    if [[ $1 =~ ^[databaseDATABASE]+$ ]]
     then
         createDatabaseFunc ${@:2}
-    elif [ $1 = "TABLE" ]
+    elif [[ $1 = ^[tableTABLE]+$ ]]
     then
         createTableFunc ${@:2}
     fi

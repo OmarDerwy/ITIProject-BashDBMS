@@ -2,24 +2,21 @@
 shopt -s extglob
 
 useFuncSQL(){
-    read -a statement -p ">" 
-    if [[ ${#statement[@]} -ne 2 ]]
+    if [[ $# -ne 1 ]]
     then 
     echo Invalid number of arguments.
     else
-        if [[ ${statement[0]} =~ ^[useUSE]+$ ]]
-        then 
-            if [[ -e ${statement[1]} ]]
-            then
-            cd ${statement[1]}
-            echo Database ${statement[1]} has been selected.
-            else
-            echo Database ${statement[1]} does not exist.
-            fi
+        if [[ -e $1 ]]
+        then
+        cd $1
+        echo Database $1 has been selected.
+        databaseInUse=$1
+        export $databaseInUse
         else
-        echo Invalid syntax
+        echo Database $1 does not exist.
         fi
     fi
+    
 }
 
 useFunc(){

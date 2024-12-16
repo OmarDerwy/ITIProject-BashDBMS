@@ -1,14 +1,18 @@
 #! /usr/bin/bash
 
 source ./createFunc
+source ./useFunc
 
+shopt -s extglob
 read -p "> " -a input
 
 case ${input[0]} in
-"CREATE")
++([createCREATE]))
     createFunc ${input[@]:1}
     ;;
-"USE")
-    useFunc ${input[@]:1}
++([useUSE]))
+    useFuncSQL ${input[@]:1}
     ;;
 esac
+
+echo $databaseInUse
