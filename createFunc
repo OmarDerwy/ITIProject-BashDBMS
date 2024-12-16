@@ -2,11 +2,16 @@
 source ./createDatabaseFunc
 source ./createTableFunc
 createFunc (){
-    if [[ $1 =~ ^[databaseDATABASE]+$ ]]
+    if [[ $# -ne 3 ]]
     then
-        createDatabaseFunc ${@:2}
-    elif [[ $1 = ^[tableTABLE]+$ ]]
-    then
-        createTableFunc ${@:2}
+        if [[ $1 =~ ^[databaseDATABASE]+$ ]]
+        then
+            createDatabaseFunc ${@:2}
+        elif [[ $1 = ^[tableTABLE]+$ ]]
+        then
+            createTableFunc ${@:2}
+        fi
+    else
+    echo 'Invalid number of arguments.'
     fi
 }
