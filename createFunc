@@ -1,5 +1,12 @@
 #! /usr/bin/bash
-
+source ./createDatabaseFunc
+source ./createTableFunc
 createFunc (){
-    echo $@
+    if [ $1 = "DATABASE" ]
+    then
+        createDatabaseFunc ${@:2}
+    elif [ $1 = "TABLE" ]
+    then
+        createTableFunc ${@:2}
+    fi
 }
