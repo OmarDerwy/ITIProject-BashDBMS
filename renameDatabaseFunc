@@ -1,0 +1,50 @@
+#! /usr/bin/bash
+shopt -s extglob
+
+renameDatabaseFuncSQL(){
+    if [[ $# -ne 4 ]]
+    then
+    echo Invalid number of Arguments.
+    else
+        if [[ $1 =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]+$ ]] 
+        then 
+            if [[ $3 =~ ^[tT][oO]+$ ]]
+                then
+                if [[ -d $2 ]]
+                then 
+                    if [[ $4 =~ ^[a-zA-Z0-9]+$ ]]
+                    then
+                    mv $2 $4 
+                    echo Database $2 has been renamed to $4.
+                    else
+                    echo Special characters not allowed.
+                    fi
+                else
+                echo Database $2 does not exist.
+                fi
+            else
+            echo Invalid Syntax, expected TO clause.
+            fi
+        else
+        echo Invalid syntax.
+        fi
+    fi
+
+}
+
+renameDatabaseFunc(){
+    read -p "Please enter Database name: " name
+    if [[ -d $name ]]
+    then 
+        read -p "Please enter a new name for the database $name: " newName
+        if [[ $newName =~ ^[a-zA-Z0-9]+$ ]]
+        then
+        mv $name $newName 
+        else
+        echo Special characters not allowed.
+        fi
+    else
+    echo Database $name does not exist.
+    fi
+}
+
