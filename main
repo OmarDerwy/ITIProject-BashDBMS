@@ -7,10 +7,10 @@ shopt -s extglob
 read -p "> " -a input
 
 case ${input[0]} in
-+([createCREATE]))
++([cC][rR][eE][aA][tT][eE]))
     createFunc ${input[@]:1}
     ;;
-+([useUSE]))
++([uU][sS][eE]))
     useFuncSQL ${input[@]:1}
     ;;
 esac

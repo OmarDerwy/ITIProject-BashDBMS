@@ -4,10 +4,10 @@ source ./createTableFunc
 createFunc (){
     if [[ $# -ne 3 ]]
     then
-        if [[ $1 =~ ^[databaseDATABASE]+$ ]]
+        if [[ $1 =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]+$ ]]
         then
             createDatabaseFunc ${@:2}
-        elif [[ $1 = ^[tableTABLE]+$ ]]
+        elif [[ $1 = ^[tT][aA][bB][lL][eE]+$ ]]
         then
             createTableFunc ${@:2}
         fi
