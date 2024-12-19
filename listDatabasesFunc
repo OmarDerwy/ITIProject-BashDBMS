@@ -1,0 +1,20 @@
+# !usr/bin/bash
+shopt -s extglob
+
+listDatabasesFuncSQL(){
+    if [[ $# -ne 1 ]]
+    then 
+        echo Invalid number of arguments.
+    else
+        if [[ $1 =~ ^[dD][aA][tT][aA][bB][aA][sS][eE][sS]+$ ]]
+        then
+            ls Databases
+        else
+        echo Invalid Syntax. Expected DATABASES keyword.
+        fi
+    fi
+}
+
+listDatabasesFunc(){
+    ls Databases;
+}
