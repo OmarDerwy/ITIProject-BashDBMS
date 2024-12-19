@@ -1,17 +1,18 @@
 #! /usr/bin/bash
 source ./createDatabaseFunc
 source ./createTableFunc
-createFunc (){
-    if [[ $# -ne 3 ]]
-    then
-        if [[ $1 =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]+$ ]]
-        then
+createFunc() {
+    if [[ $1 =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]+$ ]]; then
+        if [[ $# -ne 2 ]]; then
+            echo 'Invalid number of arguments.'
+        else
             createDatabaseFunc ${@:2}
-        elif [[ $1 = ^[tT][aA][bB][lL][eE]+$ ]]
-        then
-            createTableFunc ${@:2}
         fi
-    else
-    echo 'Invalid number of arguments.'
+    elif [[ $1 =~ ^[tT][aA][bB][lL][eE]+$ ]]; then
+        if [[ $# -ne 3 ]]; then
+            echo 'Invalid number of arguments.'
+        else
+        createTableFunc ${@:2}
+        fi
     fi
 }

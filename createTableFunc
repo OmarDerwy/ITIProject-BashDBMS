@@ -1,4 +1,12 @@
 #! /usr/bin/bash
 createTableFunc (){
-    echo tablefuncworks
+    echo $# # debug
+    if [ $# -ne 2 ]; then
+        echo Invalid number of arguments
+    elif [ -z $databaseInUse ]; then
+        echo Please choose a database first! 
+    else
+        touch $1
+        touch $1'_metadata'
+    fi
 }
