@@ -10,11 +10,11 @@ renameDatabaseFuncSQL(){
         then 
             if [[ $3 =~ ^[tT][oO]+$ ]]
                 then
-                if [[ -d $2 ]]
+                if [[ -d Databases/$2 ]]
                 then 
                     if [[ $4 =~ ^[a-zA-Z0-9]+$ ]]
                     then
-                    mv $2 $4 
+                    mv Databases/$2 Databases/$4 
                     echo Database $2 has been renamed to $4.
                     else
                     echo Special characters not allowed.
@@ -34,12 +34,12 @@ renameDatabaseFuncSQL(){
 
 renameDatabaseFunc(){
     read -p "Please enter Database name: " name
-    if [[ -d $name ]]
+    if [[ -d Databases/$name ]]
     then 
         read -p "Please enter a new name for the database $name: " newName
         if [[ $newName =~ ^[a-zA-Z0-9]+$ ]]
         then
-        mv $name $newName 
+        mv Databases/$name Databases/$newName 
         else
         echo Special characters not allowed.
         fi

@@ -9,9 +9,9 @@ then
 else
     if [[ $1 =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]+$ ]]
     then
-        if [[ -d $2 ]]
+        if [[ -d Databases/$2 ]]
         then
-            rm -r $2
+            rm -r Databases/$2
             echo "Database $2 has been deleted."
         else
             echo "Database $2 does not exist."
@@ -24,9 +24,9 @@ fi
 
 dropDatabaseFunc(){
     read -p "Please enter Database name to drop: " name
-    if [[ -d $name ]]
+    if [[ -d Databases/$name ]]
     then 
-    rm -r $name
+    rm -r Databases/$name
     echo "Database $name has been deleted."
     else
     echo Database $name does not exist.
