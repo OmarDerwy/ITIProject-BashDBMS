@@ -2,6 +2,9 @@
 
 source ./createFunc
 source ./useFunc
+source ./renameDatabaseFunc
+source ./dropDatabaseFunc
+source ./listDatabasesFunc
 
 shopt -s extglob
 
@@ -19,6 +22,22 @@ do
     +([uU][sS][eE]))
         useFuncSQL ${input[@]:1}
         ;;
+    +([dD][rR][oO][pP]))
+    if [[ ${input[@]:1} =~ ^[dD][aA][tT][aA][bB][aA][sS][eE] ]]
+    then
+        dropDatabaseFuncSQL ${input[@]:1}
+    elif [[ ${input[@]:1} =~ ^[tT][aA][bB][lL][eE] ]]
+    then
+        echo Table function here.
+    fi
+    ;;
+    +([rR][eE][nN][aA][mM][eE]))
+        renameDatabaseFuncSQL ${input[@]:1}
+        ;;
+    +([sS][hH][oO][wW]))
+        listDatabasesFuncSQL ${input[@]:1}
+        ;;
     esac
 done
-echo $databaseInUse
+
+#echo $databaseInUse
