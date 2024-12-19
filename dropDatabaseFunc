@@ -1,0 +1,34 @@
+
+# !usr/bin/bash
+shopt -s extglob
+
+dropDatabaseFuncSQL(){
+if [[ $# -ne 2 ]]
+then
+    echo Invalid number of arguments.
+else
+    if [[ $1 =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]+$ ]]
+    then
+        if [[ -d $2 ]]
+        then
+            rm -r $2
+            echo "Database $2 has been deleted."
+        else
+            echo "Database $2 does not exist."
+        fi
+    else
+        echo Invalid syntax.
+    fi
+fi
+}
+
+dropDatabaseFunc(){
+    read -p "Please enter Database name to drop: " name
+    if [[ -d $name ]]
+    then 
+    rm -r $name
+    echo "Database $name has been deleted."
+    else
+    echo Database $name does not exist.
+    fi
+}
