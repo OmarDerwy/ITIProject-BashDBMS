@@ -1,0 +1,23 @@
+#! /usr/bin/bash
+shopt -s extglob
+
+dropTableFuncSQL(){
+    if [[ $# -ne 3 ]]
+    then
+        echo Invalid number of arguments.
+    else
+        if [[ $1 =~ ^[tT][aA][bB][lL][eE] ]]
+        then 
+            if [[ -e Databases/$3/$2 ]]
+            then 
+                rm -r Databases/$3/$2
+            else
+                echo Table $2 does not exist
+            fi
+        else
+            echo Invalid syntax.
+        fi
+    fi
+}
+
+
