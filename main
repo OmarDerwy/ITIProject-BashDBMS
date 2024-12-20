@@ -26,7 +26,6 @@ do
     +([dD][rR][oO][pP]))
     if [[ ${input[1]} =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]$ ]]
     then
-        echo ${input[1]}
         dropDatabaseFuncSQL ${input[@]:1}
     elif [[ ${input[1]} =~ ^[tT][aA][bB][lL][eE]$ ]]
     then
@@ -44,7 +43,14 @@ do
         renameDatabaseFuncSQL ${input[@]:1}
         ;;
     +([sS][hH][oO][wW]))
-        listDatabasesFuncSQL ${input[@]:1}
+        if [[ $databaseInUse != "" ]]
+        then
+            cd ../..
+            listDatabasesFuncSQL ${input[@]:1}
+            cd Databases/$databaseInUse
+        else
+            listDatabasesFuncSQL ${input[@]:1}
+        fi
         ;;
     esac
 done
