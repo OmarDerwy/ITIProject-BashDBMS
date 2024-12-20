@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+
+shopt -s extglob
+
+[[ "noyes" == (hell|no|yes) ]] && echo True || echo False
