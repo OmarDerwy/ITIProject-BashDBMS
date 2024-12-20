@@ -1,11 +1,11 @@
 #! /usr/bin/bash
 
 createDatabaseFunc(){
-    if [ -d $1 ]
+    if [ -d Databases/$1 ]
     then
         echo Database already exists!
     else
-        mkdir $1
+        mkdir Databases/$1
         echo Database created sucessfully!
     fi
 }
