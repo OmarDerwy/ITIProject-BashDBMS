@@ -6,13 +6,14 @@ dropTableFuncSQL(){
     then
         echo Invalid number of arguments.
     else
-        if [[ $1 =~ ^[tT][aA][bB][lL][eE] ]]
+        if [[ $1 =~ ^[tT][aA][bB][lL][eE]+$ ]]
         then 
             if [[ -e Databases/$3/$2 ]]
             then 
                 rm -r Databases/$3/$2
+                echo ok
             else
-                echo Table $2 does not exist
+                echo Syntax is $1 Table is $2  database is $3
             fi
         else
             echo Invalid syntax.
