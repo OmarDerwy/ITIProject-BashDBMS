@@ -18,7 +18,15 @@ do
         exit
         ;;
     +([cC][rR][eE][aA][tT][eE]))
-        createFunc ${input[@]:1}
+        if [[ $databaseInUse != "" ]]
+        then
+            cd ../..
+            createFunc ${input[@]:1}
+            cd Databases/$databaseInUse
+        else
+            createFunc ${input[@]:1}
+        fi
+        
         ;;
     +([uU][sS][eE]))
         useFuncSQL ${input[@]:1}
@@ -26,7 +34,20 @@ do
     +([dD][rR][oO][pP]))
     if [[ ${input[1]} =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]$ ]]
     then
-        dropDatabaseFuncSQL ${input[@]:1}
+        if [[ $databaseInUse != "" ]]
+        then
+            cd ../..
+            dropDatabaseFuncSQL ${input[@]:1}
+                if [[ $removedDatabase = $databaseInUse ]]
+                then
+                    databaseInUse=""
+                else
+                    cd Databases/$databaseInUse
+                fi
+
+        else
+            dropDatabaseFuncSQL ${input[@]:1}
+        fi
     elif [[ ${input[1]} =~ ^[tT][aA][bB][lL][eE]$ ]]
     then
         if [[ $databaseInUse != "" ]]
