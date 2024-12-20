@@ -1,0 +1,12 @@
+#! /usr/bin/bash
+shopt -s extglob
+source ./globFuncs
+insertIntoFunc () {
+    echo $# #debug
+    funcValidation 2 $@ 
+    if [ $? -eq 1 ]; then
+        echo Critical error in function! Aborting...
+    else
+        echo function reached!!! #debug
+    fi
+}

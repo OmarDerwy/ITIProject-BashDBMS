@@ -1,0 +1,17 @@
+#! /usr/bin/bash
+shopt -s extglob
+
+funcValidation() {
+    echo $@ # debug
+    errorFlag=1
+    if [ $# -ne $(($1+1)) ]; then
+        echo Invalid number of arguments
+    elif [ -z $databaseInUse ]; then
+        echo 'Please choose a database first!'
+    elif [ ! -f $2 ] || [ ! -f $2'_metadata' ]; then
+        echo "Specified table doesn't exist, Please create it first"
+    else
+        errorFlag=0
+    fi
+    return $errorFlag
+}
