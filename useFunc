@@ -21,7 +21,7 @@ useFuncSQL(){
 
 useFunc(){
     read -p "Please enter Database name: " name
-    if [[ -e Databases/$name]]
+    if [[ -e Databases/$name ]]
     then 
     cd Databases/$name 
     echo Database $name has been selected.
