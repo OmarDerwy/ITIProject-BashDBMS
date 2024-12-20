@@ -1,12 +1,56 @@
 #! /usr/bin/bash
+shopt -s extglob
 createTableFunc (){
-    echo $# # debug
+    # echo $# # debug
     if [ $# -ne 2 ]; then
         echo Invalid number of arguments
     elif [ -z $databaseInUse ]; then
         echo Please choose a database first! 
+    elif [ -f $1 -o -f $1'_metadata' ]; then
+        echo Table already exists!
     else
-        touch $1
-        touch $1'_metadata'
+        # check for primary key
+        pkOccurance=`grep -o ":pk" <<< $2 | wc -l`
+        if [[ $pkOccurance -ne 1 ]]; then
+            echo You need to define exactly one primary key, not more, not less.
+        else
+            # create files
+            touch $1
+            touch $1'_metadata'
+
+            # seperate fields by commas
+            IFS=','
+            read -a fields <<< $2
+            echo ${fields[1]} #debug
+
+            # loop through fields
+            for field in ${fields[@]}
+            do
+                # prepare validation variables
+                colonNum=`grep -o ":" <<< $field | wc -l`
+                datatype=`cut -d : -f2 <<< $field`
+
+                # validate that each fields specifies a datatype
+                if [ $colonNum -lt 1 ]; then
+                    echo 'Follow this example: [field name]:[datatype]:[pk]'
+                    rm $1 $1'_metadata'
+                    break
+                # validate that there no more specifications that necessary
+                elif [ $colonNum -gt 2 ]; then
+                    echo 'Follow this example: [field name]:[datatype]:[pk]'
+                    rm $1 $1'_metadata'
+                    break
+                fi
+                # validate that there is a valid datatype
+                if [[ $datatype != @(varchar|int) ]]; then
+                    echo 'Please input a valid datatype (varchar/int)'
+                    rm $1 $1'_metadata'
+                    break
+                else
+                    echo $field >> $1'_metadata'
+                    echo "Added $field to the metadata file"
+                fi
+            done
+        fi
     fi
 }
