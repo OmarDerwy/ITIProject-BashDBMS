@@ -6,9 +6,9 @@ useFuncSQL(){
     then 
     echo Invalid number of arguments.
     else
-        if [[ -e $1 ]]
+        if [[ -e Databases/$1 ]]
         then
-        cd $1
+        cd Databases/$1
         echo Database $1 has been selected.
         databaseInUse=$1
         export $databaseInUse
@@ -21,9 +21,9 @@ useFuncSQL(){
 
 useFunc(){
     read -p "Please enter Database name: " name
-    if [[ -e $name ]]
+    if [[ -e Databases/$name]]
     then 
-    cd $name 
+    cd Databases/$name 
     echo Database $name has been selected.
     else
     echo Database $name does not exist.
