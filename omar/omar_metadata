@@ -1,3 +1,0 @@
-id:int:pk
-name:varchar
-cat_id:int
