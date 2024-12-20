@@ -40,7 +40,15 @@ do
     fi
     ;;
     +([rR][eE][nN][aA][mM][eE]))
-        renameDatabaseFuncSQL ${input[@]:1}
+        if [[ $databaseInUse != "" ]]
+        then
+            cd ../..
+            renameDatabaseFuncSQL ${input[@]:1}
+            databaseInUse=$newDatabaseName
+            cd Databases/$databaseInUse
+        else
+            renameDatabaseFuncSQL ${input[@]:1}
+        fi
         ;;
     +([sS][hH][oO][wW]))
         if [[ $databaseInUse != "" ]]
