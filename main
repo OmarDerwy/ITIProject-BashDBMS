@@ -5,6 +5,7 @@ source ./useFunc
 source ./renameDatabaseFunc
 source ./dropDatabaseFunc
 source ./listDatabasesFunc
+source ./dropTableFunc
 
 shopt -s extglob
 
@@ -23,12 +24,20 @@ do
         useFuncSQL ${input[@]:1}
         ;;
     +([dD][rR][oO][pP]))
-    if [[ ${input[@]:1} =~ ^[dD][aA][tT][aA][bB][aA][sS][eE] ]]
+    if [[ ${input[1]} =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]$ ]]
     then
+        echo ${input[1]}
         dropDatabaseFuncSQL ${input[@]:1}
-    elif [[ ${input[@]:1} =~ ^[tT][aA][bB][lL][eE] ]]
+    elif [[ ${input[1]} =~ ^[tT][aA][bB][lL][eE]$ ]]
     then
-        echo Table function here.
+        if [[ $databaseInUse != "" ]]
+        then
+            dropTableFuncSQL ${input[@]:1} $databaseInUse
+        else
+            echo Please select a database first.
+        fi
+    else 
+        echo Invalid Syntax.
     fi
     ;;
     +([rR][eE][nN][aA][mM][eE]))

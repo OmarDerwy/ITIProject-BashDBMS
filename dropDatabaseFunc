@@ -7,17 +7,12 @@ if [[ $# -ne 2 ]]
 then
     echo Invalid number of arguments.
 else
-    if [[ $1 =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]+$ ]]
+    if [[ -d Databases/$2 ]]
     then
-        if [[ -d Databases/$2 ]]
-        then
-            rm -r Databases/$2
-            echo "Database $2 has been deleted."
-        else
-            echo "Database $2 does not exist."
-        fi
+        rm -r Databases/$2
+        echo "Database $2 has been deleted."
     else
-        echo Invalid syntax.
+        echo "Database $2 does not exist."
     fi
 fi
 }
