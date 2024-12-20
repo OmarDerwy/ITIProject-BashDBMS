@@ -6,9 +6,9 @@ renameDatabaseFuncSQL(){
     then
     echo Invalid number of Arguments.
     else
-        if [[ $1 =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]+$ ]] 
+        if [[ $1 =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]$ ]] 
         then 
-            if [[ $3 =~ ^[tT][oO]+$ ]]
+            if [[ $3 =~ ^[tT][oO]$ ]]
                 then
                 if [[ -d Databases/$2 ]]
                 then 
