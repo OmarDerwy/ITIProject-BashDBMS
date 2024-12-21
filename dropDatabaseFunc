@@ -19,6 +19,8 @@ dropDatabaseFuncSQL() {
 dropDatabaseFunc() {
     read -p "Please enter Database name to drop: " name
     if [[ -d Databases/$name ]]; then
+        removedDatabaseMenu=$name
+        export $removedDatabaseMenu
         rm -r Databases/$name
         echo "Database $name has been deleted."
     else

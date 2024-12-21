@@ -8,9 +8,9 @@ dropTableFuncSQL() {
         if [[ -e $2 ]]; then
             rm -r $2
             rm -r "$2"_metadata
-            echo Table $2 has been removed form database $3.
+            echo Table $2 has been removed form database.
         else
-            echo Table $2 does not exist in database $3.
+            echo Table $2 does not exist in database.
         fi
     fi
 }
@@ -20,8 +20,8 @@ dropTableFunc() {
     if [[ -e $tablename ]]; then
         rm -r $tablename
         rm -r "$tablename"_metadata
-        echo Table $2 has been removed form database $3.
+        echo Table $tablename has been removed form database.
     else
-        echo Table $2 does not exist in database $3.
+        echo Table $tablename does not exist in database.
     fi
 }

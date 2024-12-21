@@ -104,31 +104,73 @@ select mode in MySQL Menu Exit; do
         select option in "Select/Use Database" "Create Database" "Drop Database" "Rename Database" "Show Databases" "Create Table" "Drop Table" "Truncate Table" "Show Tables" "Exit"; do
             case $option in
             "Select/Use Database")
-                useFunc
+                if [[ $databaseInUseMenu != "" ]]; then
+                    cd ../..
+                    useFunc
+                    echo $databaseInUseMenu
+                else
+                    useFunc
+                fi
                 ;;
             "Create Database")
                 echo create db
                 ;;
             "Drop Database")
-                dropDatabaseFunc
+                if [[ $databaseInUseMenu != "" ]]; then
+                    cd ../..
+                    dropDatabaseFunc
+                    if [[ $removedDatabaseMenu = $databaseInUseMenu ]]; then
+                        databaseInUseMenu=""
+                    else
+                        cd Databases/$databaseInUseMenu
+                    fi
+
+                else
+                    dropDatabaseFunc
+                fi
                 ;;
             "Rename Database")
-                renameDatabaseFunc
+                if [[ $databaseInUseMenu != "" ]]; then
+                    cd ../..
+                    renameDatabaseFunc
+                    databaseInUseMenu=$newDatabaseNameMenu
+                    cd Databases/$databaseInUseMenu
+                else
+                    renameDatabaseFunc
+                fi
                 ;;
             "Show Databases")
-                listDatabasesFunc
+                if [[ $databaseInUseMenu != "" ]]; then
+                    cd ../..
+                    listDatabasesFunc
+                    cd Databases/$databaseInUseMenu
+                else
+                    listDatabasesFunc
+                fi
                 ;;
             "Create Table")
                 echo create table
                 ;;
             "Drop Table")
-                dropTableFunc
+                if [[ $databaseInUseMenu != "" ]]; then
+                    dropTableFunc
+                else
+                    echo Please select a database first.
+                fi
                 ;;
             "Truncate Table")
-                truncateTableFunc
+                if [[ $databaseInUseMenu != "" ]]; then
+                    truncateTable
+                else
+                    echo Please select a database first.
+                fi
                 ;;
             "Show Tables")
-                showTablesFunc
+                if [[ $databaseInUseMenu != "" ]]; then
+                    showTablesFunc
+                else
+                    echo Please select a database first.
+                fi
                 ;;
             "Exit")
                 exit

@@ -22,6 +22,8 @@ useFunc() {
     if [[ -e Databases/$name ]]; then
         cd Databases/$name
         echo Database $name has been selected.
+        databaseInUseMenu=$name
+        export $databaseInUseMenu
     else
         echo Database $name does not exist.
     fi

@@ -34,6 +34,8 @@ renameDatabaseFunc() {
     if [[ -d Databases/$name ]]; then
         read -p "Please enter a new name for the database $name: " newName
         if [[ $newName =~ ^[a-zA-Z0-9]+$ ]]; then
+            newDatabaseNameMenu=$newName
+            export $newDatabaseNameMenu
             mv Databases/$name Databases/$newName
         else
             echo Special characters not allowed.

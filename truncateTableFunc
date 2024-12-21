@@ -17,9 +17,9 @@ truncateTableSQL() {
 truncateTable() {
     read -p "Please enter table name to empty: " tablename
     if [[ -e $tablename ]]; then
-        echo "" >$2
-        echo Table $2 has been emptied.
+        echo "" >$tablename
+        echo Table $tablename has been emptied.
     else
-        echo Table $2 does not exist in database $3.
+        echo Table $tablename does not exist in database $3.
     fi
 }
