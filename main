@@ -18,18 +18,17 @@ do
         exit
         ;;
     +([cC][rR][eE][aA][tT][eE]))
+        createFunc ${input[@]:1}
+        ;;
+    +([uU][sS][eE]))
         if [[ $databaseInUse != "" ]]
         then
             cd ../..
-            createFunc ${input[@]:1}
-            cd Databases/$databaseInUse
+            useFuncSQL ${input[@]:1}
+            echo $databaseInUse
         else
-            createFunc ${input[@]:1}
+            useFuncSQL ${input[@]:1}
         fi
-        
-        ;;
-    +([uU][sS][eE]))
-        useFuncSQL ${input[@]:1}
         ;;
     +([dD][rR][oO][pP]))
     if [[ ${input[1]} =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]$ ]]
