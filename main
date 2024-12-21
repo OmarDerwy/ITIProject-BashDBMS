@@ -13,27 +13,28 @@ shopt -s extglob
 declare -i exit=0
 until [[ $exit -eq 1 ]]
 do 
-    read -p "> " -a input
-    case ${input[0]} in
+    read -p "> " input
+    eval "set -- $input"
+    case $1 in
     +([Ee][Xx][Ii][Tt]))
         exit
         ;;
     +([cC][rR][eE][aA][tT][eE]))
-        createFunc ${input[@]:1}
+        createFunc ${@:2}
         ;;
     +([uU][sS][eE]))
-        useFuncSQL ${input[@]:1}
+        useFuncSQL ${@:2}
         ;;
     +([dD][rR][oO][pP]))
-        if [[ ${input[1]} =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]$ ]]
+        if [[ ${2} =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]$ ]]
         then
-            echo ${input[1]}
-            dropDatabaseFuncSQL ${input[@]:1}
-        elif [[ ${input[1]} =~ ^[tT][aA][bB][lL][eE]$ ]]
+            echo ${2}
+            dropDatabaseFuncSQL ${@:2}
+        elif [[ ${2} =~ ^[tT][aA][bB][lL][eE]$ ]]
         then
             if [[ $databaseInUse != "" ]]
             then
-                dropTableFuncSQL ${input[@]:1} $databaseInUse
+                dropTableFuncSQL ${@:2} $databaseInUse
             else
                 echo Please select a database first.
             fi
@@ -42,17 +43,17 @@ do
         fi
         ;;
     +([rR][eE][nN][aA][mM][eE]))
-        renameDatabaseFuncSQL ${input[@]:1}
+        renameDatabaseFuncSQL ${@:2}
         ;;
     +([sS][hH][oO][wW]))
-        listDatabasesFuncSQL ${input[@]:1}
+        listDatabasesFuncSQL ${@:2}
         ;;
     +([Ii][Nn][Ss][Ee][Rr][Tt]))
-        insertIntoFunc ${input[@]:1}
+        insertIntoFunc ${@:2}
         ;;
     *)
         echo Invalid Syntax
     esac
 done
 
-#echo $databaseInUse
+# #echo $databaseInUse
