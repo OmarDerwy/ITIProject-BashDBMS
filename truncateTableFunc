@@ -1,14 +1,12 @@
 #! /usr/bin/bash
 shopt -s extglob
 
-truncateTableSQL(){
-    if [[ $# -ne 2 ]]
-    then
+truncateTableSQL() {
+    if [[ $# -ne 2 ]]; then
         echo Invalid number of arguments.
     else
-        if [[ -e $2 ]]
-        then 
-            echo "" > $2
+        if [[ -e $2 ]]; then
+            echo "" >$2
             echo Table $2 has been emptied.
         else
             echo Table $2 does not exist in database $3.
@@ -16,13 +14,12 @@ truncateTableSQL(){
     fi
 }
 
-truncateTable(){
+truncateTable() {
     read -p "Please enter table name to empty: " tablename
-    if [[  -e $tablename ]]
-    then
-        echo "" > $2
-            echo Table $2 has been emptied.
-        else
-            echo Table $2 does not exist in database $3.
+    if [[ -e $tablename ]]; then
+        echo "" >$2
+        echo Table $2 has been emptied.
+    else
+        echo Table $2 does not exist in database $3.
     fi
 }

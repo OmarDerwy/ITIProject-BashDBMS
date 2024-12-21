@@ -10,103 +10,142 @@ source ./truncateTableFunc
 source ./showTablesFunc
 
 shopt -s extglob
+echo Welcome. Please choose a database mode.
 
-declare -i exit=0
-until [[ $exit -eq 1 ]]
-do 
-    read -p "> " -a input
-    case ${input[0]} in
-    +([Ee][Xx][Ii][Tt]))
-        exit
-        ;;
-    +([cC][rR][eE][aA][tT][eE]))
-        createFunc ${input[@]:1}
-        ;;
-    +([uU][sS][eE]))
-        if [[ $databaseInUse != "" ]]
-        then
-            cd ../..
-            useFuncSQL ${input[@]:1}
-            echo $databaseInUse
-        else
-            useFuncSQL ${input[@]:1}
-        fi
-        ;;
-    +([dD][rR][oO][pP]))
-    if [[ ${input[1]} =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]$ ]]
-    then
-        if [[ $databaseInUse != "" ]]
-        then
-            cd ../..
-            dropDatabaseFuncSQL ${input[@]:1}
-                if [[ $removedDatabase = $databaseInUse ]]
-                then
-                    databaseInUse=""
+select mode in MySQL Menu Exit; do
+    case $mode in
+    "MySQL")
+        declare -i exit=0
+        until [[ $exit -eq 1 ]]; do
+            read -p "> " -a input
+            case ${input[0]} in
+            +([Ee][Xx][Ii][Tt]))
+                exit
+                ;;
+            +([cC][rR][eE][aA][tT][eE]))
+                createFunc ${input[@]:1}
+                ;;
+            +([uU][sS][eE]))
+                if [[ $databaseInUse != "" ]]; then
+                    cd ../..
+                    useFuncSQL ${input[@]:1}
+                    echo $databaseInUse
                 else
-                    cd Databases/$databaseInUse
+                    useFuncSQL ${input[@]:1}
                 fi
+                ;;
+            +([dD][rR][oO][pP]))
+                if [[ ${input[1]} =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]$ ]]; then
+                    if [[ $databaseInUse != "" ]]; then
+                        cd ../..
+                        dropDatabaseFuncSQL ${input[@]:1}
+                        if [[ $removedDatabase = $databaseInUse ]]; then
+                            databaseInUse=""
+                        else
+                            cd Databases/$databaseInUse
+                        fi
 
-        else
-            dropDatabaseFuncSQL ${input[@]:1}
-        fi
-    elif [[ ${input[1]} =~ ^[tT][aA][bB][lL][eE]$ ]]
-    then
-        if [[ $databaseInUse != "" ]]
-        then
-            dropTableFuncSQL ${input[@]:1}
-        else
-            echo Please select a database first.
-        fi
-    else 
-        echo Invalid Syntax.
-    fi
-    ;;
-    +([rR][eE][nN][aA][mM][eE]))
-        if [[ $databaseInUse != "" ]]
-        then
-            cd ../..
-            renameDatabaseFuncSQL ${input[@]:1}
-            databaseInUse=$newDatabaseName
-            cd Databases/$databaseInUse
-        else
-            renameDatabaseFuncSQL ${input[@]:1}
-        fi
+                    else
+                        dropDatabaseFuncSQL ${input[@]:1}
+                    fi
+                elif [[ ${input[1]} =~ ^[tT][aA][bB][lL][eE]$ ]]; then
+                    if [[ $databaseInUse != "" ]]; then
+                        dropTableFuncSQL ${input[@]:1}
+                    else
+                        echo Please select a database first.
+                    fi
+                else
+                    echo Invalid Syntax.
+                fi
+                ;;
+            +([rR][eE][nN][aA][mM][eE]))
+                if [[ $databaseInUse != "" ]]; then
+                    cd ../..
+                    renameDatabaseFuncSQL ${input[@]:1}
+                    databaseInUse=$newDatabaseName
+                    cd Databases/$databaseInUse
+                else
+                    renameDatabaseFuncSQL ${input[@]:1}
+                fi
+                ;;
+            +([sS][hH][oO][wW]))
+                if [[ ${input[1]} =~ ^[dD][aA][tT][aA][bB][aA][sS][eE][sS]$ ]]; then
+                    if [[ $databaseInUse != "" ]]; then
+                        cd ../..
+                        listDatabasesFuncSQL ${input[@]:1}
+                        cd Databases/$databaseInUse
+                    else
+                        listDatabasesFuncSQL ${input[@]:1}
+                    fi
+                elif [[ ${input[1]} =~ ^[tT][aA][bB][lL][eE][sS]$ ]]; then
+                    if [[ $databaseInUse != "" ]]; then
+                        showTablesFuncSQL ${input[@]:1}
+                    else
+                        echo Please select a database first.
+                    fi
+                fi
+                ;;
+            +([tT][rR][uU][nN][cC][aA][tT][eE]))
+                if [[ ${input[1]} =~ ^[tT][aA][bB][lL][eE]$ ]]; then
+                    if [[ $databaseInUse != "" ]]; then
+                        truncateTableSQL ${input[@]:1}
+                    else
+                        echo Please select a database first.
+                    fi
+                fi
+                ;;
+            *)
+                echo Invalid input.
+                ;;
+            esac
+        done
         ;;
-    +([sS][hH][oO][wW]))
-        if [[ ${input[1]} =~ ^[dD][aA][tT][aA][bB][aA][sS][eE][sS]$ ]]
-        then
-            if [[ $databaseInUse != "" ]]
-            then
-                cd ../..
-                listDatabasesFuncSQL ${input[@]:1}
-                cd Databases/$databaseInUse
-            else
-                listDatabasesFuncSQL ${input[@]:1}
-            fi
-        elif [[ ${input[1]} =~ ^[tT][aA][bB][lL][eE][sS]$ ]]
-        then 
-            if [[ $databaseInUse != "" ]]
-            then
-                showTablesFuncSQL ${input[@]:1}
-            else
-                echo Please select a database first.
-            fi
-        fi
+    "Menu")
+        select option in "Select/Use Database" "Create Database" "Drop Database" "Rename Database" "Show Databases" "Create Table" "Drop Table" "Truncate Table" "Show Tables" "Exit"; do
+            case $option in
+            "Select/Use Database")
+                useFunc
+                ;;
+            "Create Database")
+                echo create db
+                ;;
+            "Drop Database")
+                dropDatabaseFunc
+                ;;
+            "Rename Database")
+                renameDatabaseFunc
+                ;;
+            "Show Databases")
+                listDatabasesFunc
+                ;;
+            "Create Table")
+                echo create table
+                ;;
+            "Drop Table")
+                dropTableFunc
+                ;;
+            "Truncate Table")
+                truncateTableFunc
+                ;;
+            "Show Tables")
+                showTablesFunc
+                ;;
+            "Exit")
+                exit
+                ;;
+            *)
+                echo Invalid input
+                ;;
+            esac
+        done
         ;;
-    +([tT][rR][uU][nN][cC][aA][tT][eE]))
-        if [[ ${input[1]} =~ ^[tT][aA][bB][lL][eE]$ ]]
-        then
-            if [[ $databaseInUse != "" ]]
-            then
-                truncateTableSQL ${input[@]:1}
-            else
-                echo Please select a database first.
-            fi
-        fi
+
+    "Exit")
+        exit
         ;;
     *)
         echo Invalid input.
+        ;;
     esac
 done
-
 #echo $databaseInUse

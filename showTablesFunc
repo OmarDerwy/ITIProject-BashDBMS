@@ -1,16 +1,15 @@
 # !usr/bin/bash
 shopt -s extglob
 
-showTablesFuncSQL(){
-    if [[ $# -ne 1 ]]
-    then 
+showTablesFuncSQL() {
+    if [[ $# -ne 1 ]]; then
         echo Invalid number of arguments.
     else
         ls | grep -v '_metadata$'
     fi
 }
 
-showTablesFunc(){
+showTablesFunc() {
     ls | grep -v '_metadata$'
 
 }

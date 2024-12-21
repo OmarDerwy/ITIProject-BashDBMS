@@ -1,15 +1,14 @@
 # !usr/bin/bash
 shopt -s extglob
 
-listDatabasesFuncSQL(){
-    if [[ $# -ne 1 ]]
-    then 
+listDatabasesFuncSQL() {
+    if [[ $# -ne 1 ]]; then
         echo Invalid number of arguments.
     else
-            ls Databases
+        ls Databases
     fi
 }
 
-listDatabasesFunc(){
-    ls Databases;
+listDatabasesFunc() {
+    ls Databases
 }

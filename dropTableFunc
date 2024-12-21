@@ -1,13 +1,11 @@
 #! /usr/bin/bash
 shopt -s extglob
 
-dropTableFuncSQL(){
-    if [[ $# -ne 2 ]]
-    then
+dropTableFuncSQL() {
+    if [[ $# -ne 2 ]]; then
         echo Invalid number of arguments.
     else
-        if [[ -e $2 ]]
-        then 
+        if [[ -e $2 ]]; then
             rm -r $2
             rm -r "$2"_metadata
             echo Table $2 has been removed form database $3.
@@ -17,15 +15,13 @@ dropTableFuncSQL(){
     fi
 }
 
-dropTableFunc(){
+dropTableFunc() {
     read -p "Please enter table name to drop: " tablename
-    if [[  -e $tablename ]]
-    then
+    if [[ -e $tablename ]]; then
         rm -r $tablename
         rm -r "$tablename"_metadata
-            echo Table $2 has been removed form database $3.
-        else
-            echo Table $2 does not exist in database $3.
+        echo Table $2 has been removed form database $3.
+    else
+        echo Table $2 does not exist in database $3.
     fi
 }
-

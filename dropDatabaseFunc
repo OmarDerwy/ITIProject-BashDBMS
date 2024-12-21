@@ -1,31 +1,27 @@
-
 # !usr/bin/bash
 shopt -s extglob
 
-dropDatabaseFuncSQL(){
-if [[ $# -ne 2 ]]
-then
-    echo Invalid number of arguments.
-else
-    if [[ -d Databases/$2 ]]
-    then
-        removedDatabase=$2
-        export $removedDatabase
-        rm -r Databases/$2
-        echo "Database $2 has been deleted."
+dropDatabaseFuncSQL() {
+    if [[ $# -ne 2 ]]; then
+        echo Invalid number of arguments.
     else
-        echo "Database $2 does not exist."
+        if [[ -d Databases/$2 ]]; then
+            removedDatabase=$2
+            export $removedDatabase
+            rm -r Databases/$2
+            echo "Database $2 has been deleted."
+        else
+            echo "Database $2 does not exist."
+        fi
     fi
-fi
 }
 
-dropDatabaseFunc(){
+dropDatabaseFunc() {
     read -p "Please enter Database name to drop: " name
-    if [[ -d Databases/$name ]]
-    then 
-    rm -r Databases/$name
-    echo "Database $name has been deleted."
+    if [[ -d Databases/$name ]]; then
+        rm -r Databases/$name
+        echo "Database $name has been deleted."
     else
-    echo Database $name does not exist.
+        echo Database $name does not exist.
     fi
 }

@@ -1,32 +1,28 @@
 #! /usr/bin/bash
 shopt -s extglob
 
-useFuncSQL(){
-    if [[ $# -ne 1 ]]
-    then 
-    echo Invalid number of arguments.
+useFuncSQL() {
+    if [[ $# -ne 1 ]]; then
+        echo Invalid number of arguments.
     else
-        if [[ -e Databases/$1 ]]
-        then
-        cd Databases/$1
-        echo Database $1 has been selected.
-        databaseInUse=$1
-        export $databaseInUse
+        if [[ -e Databases/$1 ]]; then
+            cd Databases/$1
+            echo Database $1 has been selected.
+            databaseInUse=$1
+            export $databaseInUse
         else
-        echo Database $1 does not exist.
+            echo Database $1 does not exist.
         fi
     fi
-    
+
 }
 
-useFunc(){
+useFunc() {
     read -p "Please enter Database name: " name
-    if [[ -e Databases/$name ]]
-    then 
-    cd Databases/$name 
-    echo Database $name has been selected.
+    if [[ -e Databases/$name ]]; then
+        cd Databases/$name
+        echo Database $name has been selected.
     else
-    echo Database $name does not exist.
+        echo Database $name does not exist.
     fi
 }
-
