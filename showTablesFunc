@@ -6,10 +6,11 @@ showTablesFuncSQL(){
     then 
         echo Invalid number of arguments.
     else
-        ls
+        ls | grep -v '_metadata$'
     fi
 }
 
 showTablesFunc(){
-    ls
+    ls | grep -v '_metadata$'
+
 }

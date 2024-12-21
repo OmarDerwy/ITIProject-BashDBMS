@@ -7,6 +7,8 @@ source ./dropDatabaseFunc
 source ./listDatabasesFunc
 source ./dropTableFunc
 source ./truncateTableFunc
+source ./showTablesFunc
+
 shopt -s extglob
 
 declare -i exit=0
@@ -71,13 +73,24 @@ do
         fi
         ;;
     +([sS][hH][oO][wW]))
-        if [[ $databaseInUse != "" ]]
+        if [[ ${input[1]} =~ ^[dD][aA][tT][aA][bB][aA][sS][eE][sS]$ ]]
         then
-            cd ../..
-            listDatabasesFuncSQL ${input[@]:1}
-            cd Databases/$databaseInUse
-        else
-            listDatabasesFuncSQL ${input[@]:1}
+            if [[ $databaseInUse != "" ]]
+            then
+                cd ../..
+                listDatabasesFuncSQL ${input[@]:1}
+                cd Databases/$databaseInUse
+            else
+                listDatabasesFuncSQL ${input[@]:1}
+            fi
+        elif [[ ${input[1]} =~ ^[tT][aA][bB][lL][eE][sS]$ ]]
+        then 
+            if [[ $databaseInUse != "" ]]
+            then
+                showTablesFuncSQL ${input[@]:1}
+            else
+                echo Please select a database first.
+            fi
         fi
         ;;
     +([tT][rR][uU][nN][cC][aA][tT][eE]))
