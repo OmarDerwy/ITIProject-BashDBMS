@@ -91,6 +91,8 @@ do
             fi
         fi
         ;;
+    *)
+        echo Invalid input.
     esac
 done
 
