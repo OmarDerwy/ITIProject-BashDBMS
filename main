@@ -6,7 +6,7 @@ source ./renameDatabaseFunc
 source ./dropDatabaseFunc
 source ./listDatabasesFunc
 source ./dropTableFunc
-
+source ./truncateTableFunc
 shopt -s extglob
 
 declare -i exit=0
@@ -51,7 +51,7 @@ do
     then
         if [[ $databaseInUse != "" ]]
         then
-            dropTableFuncSQL ${input[@]:1} $databaseInUse
+            dropTableFuncSQL ${input[@]:1}
         else
             echo Please select a database first.
         fi
@@ -78,6 +78,17 @@ do
             cd Databases/$databaseInUse
         else
             listDatabasesFuncSQL ${input[@]:1}
+        fi
+        ;;
+    +([tT][rR][uU][nN][cC][aA][tT][eE]))
+        if [[ ${input[1]} =~ ^[tT][aA][bB][lL][eE]$ ]]
+        then
+            if [[ $databaseInUse != "" ]]
+            then
+                truncateTableSQL ${input[@]:1}
+            else
+                echo Please select a database first.
+            fi
         fi
         ;;
     esac
