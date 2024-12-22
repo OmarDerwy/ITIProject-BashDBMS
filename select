@@ -5,7 +5,7 @@ selectSQL() {
 	if [[ $# -le 7 ]]; then
 		if [[ $2 =~ ^[fF][rR][oO][mM]$ ]]; then
 			if [[ $# -eq 3 ]]; then
-				if [[ -e Databases/hello1/$3 ]]; then
+				if [[ -e $3 ]]; then
 					columnPosition=$(
 						awk -v x="$1" '                                                                      
 						BEGIN{
@@ -15,7 +15,7 @@ selectSQL() {
 								if($1==x){print NR}
 						}                             
 													
-						' Databases/hello1/"$3"_metadata
+						' "$3"_metadata
 					)
 					if [[ $1 =~ ^[*]$ ]]; then
 						awk '
@@ -28,7 +28,7 @@ selectSQL() {
 								print $0
 							}
 							END{}
-							' Databases/hello1/$3
+							' $3
 					else
 						awk -v x=$columnPosition '
 							BEGIN{
@@ -40,7 +40,7 @@ selectSQL() {
 								print $x
 							}
 							END{}
-							' Databases/hello1/$3
+							' $3
 					fi
 
 				else
@@ -57,7 +57,7 @@ selectSQL() {
 								if($1==x){print NR}
 						}                             
 													
-						' Databases/hello1/"$3"_metadata
+						' "$3"_metadata
 					)
 
 					if [[ $1 =~ ^[*]$ ]]; then
@@ -72,7 +72,7 @@ selectSQL() {
 							
 						}
 						END{}
-							' Databases/hello1/$3
+							' $3
 					else
 						columnToBePrinted=$(
 							awk -v x="$1" '                                                                      
@@ -83,7 +83,7 @@ selectSQL() {
 								if($1==x){print NR}
 						}                             
 													
-						' Databases/hello1/"$3"_metadata
+						' "$3"_metadata
 						)
 						awk -v x=$columnPosition -v y=$7 -v z=$columnToBePrinted '
 						BEGIN{
@@ -96,7 +96,7 @@ selectSQL() {
 							
 						}
 						END{}
-							' Databases/hello1/$3
+							' $3
 					fi
 				else
 					echo Invalid Syntax. Expected WHERE clause.
@@ -112,6 +112,19 @@ selectSQL() {
 	fi
 }
 
-selectSQL "*" From usersss
 
-#select() {}
+selectFunc() {
+	read -p "Please enter table name to select from: " tableName
+	read -p "Please enter column name to select from: " columnName
+	read -p "Please enter a condition (leave empty if there is none): " condition 
+	if [[ -e $tableName ]]; then
+		if [[ $condition != "" ]]; then
+		selectSQL $columnName FROM $tableName WHERE conditio
+		else 
+		selectSQL $columnName FROM $tableName 
+		fi
+	else
+		echo Table $tableName does not exist
+	fi
+
+}
