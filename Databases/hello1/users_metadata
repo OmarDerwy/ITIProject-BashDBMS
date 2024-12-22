@@ -1,0 +1,4 @@
+id:int:pk
+name:str
+category:str
+dep_id:int
