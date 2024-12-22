@@ -1,0 +1,117 @@
+#! /usr/bin/bash
+shopt -s extglob
+
+selectSQL() {
+	if [[ $# -le 7 ]]; then
+		if [[ $2 =~ ^[fF][rR][oO][mM]$ ]]; then
+			if [[ $# -eq 3 ]]; then
+				if [[ -e Databases/hello1/$3 ]]; then
+					columnPosition=$(
+						awk -v x="$1" '                                                                      
+						BEGIN{
+								FS=":"
+						}            
+						{              
+								if($1==x){print NR}
+						}                             
+													
+						' Databases/hello1/"$3"_metadata
+					)
+					if [[ $1 =~ ^[*]$ ]]; then
+						awk '
+							BEGIN{
+								FS=":"
+								
+							}
+							{
+								
+								print $0
+							}
+							END{}
+							' Databases/hello1/$3
+					else
+						awk -v x=$columnPosition '
+							BEGIN{
+								FS=":"
+								
+							}
+							{
+								
+								print $x
+							}
+							END{}
+							' Databases/hello1/$3
+					fi
+
+				else
+					echo Database $3 does not exist
+				fi
+			elif [[ $# -eq 7 ]]; then
+				if [[ $4 =~ ^[wW][hH][eE][rR][eE]$ ]]; then
+					columnPosition=$(
+						awk -v x="$5" '                                                                      
+						BEGIN{
+								FS=":"
+						}            
+						{              
+								if($1==x){print NR}
+						}                             
+													
+						' Databases/hello1/"$3"_metadata
+					)
+
+					if [[ $1 =~ ^[*]$ ]]; then
+						awk -v x=$columnPosition -v y=$7 '
+						BEGIN{
+							FS=":"
+						}
+						{
+							if($x==y){
+								print $0
+							}	
+							
+						}
+						END{}
+							' Databases/hello1/$3
+					else
+						columnToBePrinted=$(
+							awk -v x="$1" '                                                                      
+						BEGIN{
+								FS=":"
+						}            
+						{              
+								if($1==x){print NR}
+						}                             
+													
+						' Databases/hello1/"$3"_metadata
+						)
+						awk -v x=$columnPosition -v y=$7 -v z=$columnToBePrinted '
+						BEGIN{
+							FS=":"
+						}
+						{
+							if($x==y){
+								print $z
+							}	
+							
+						}
+						END{}
+							' Databases/hello1/$3
+					fi
+				else
+					echo Invalid Syntax. Expected WHERE clause.
+				fi
+			else
+				echo Invalid syntax. Expected arguments seperated by empty space.
+			fi
+		else
+			echo Invalid Syntax. Expected FROM clause.
+		fi
+	else
+		echo Invalid number of arguments.
+	fi
+}
+
+selectSQL "*" From usersss
+
+#select() {}
