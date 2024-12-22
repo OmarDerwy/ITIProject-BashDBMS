@@ -104,7 +104,7 @@ do
         fi
         ;;
     +([Ii][Nn][Ss][Ee][Rr][Tt]))
-        insertIntoFunc ${@:2}
+        insertIntoFunc ${input[@]:1}
         ;;
     *)
         echo Invalid input.
