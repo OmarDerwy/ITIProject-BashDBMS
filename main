@@ -112,6 +112,12 @@ select mode in MySQL Menu Exit; do
                     echo Please select a database first.
                 fi
                 ;;
+            +([Ii][Nn][Ss][Ee][Rr][Tt]))
+                insertIntoFunc ${input[@]:1}
+                ;;
+            +([Uu][Pp][Dd][Aa][Tt][Ee]))
+                updateFunc ${input[@]:1}
+                ;;
             *)
                 echo Invalid input.
                 ;;
@@ -216,12 +222,6 @@ select mode in MySQL Menu Exit; do
 
     "Exit")
         exit
-        ;;
-    +([Ii][Nn][Ss][Ee][Rr][Tt]))
-        insertIntoFunc ${input[@]:1}
-        ;;
-    +([Uu][Pp][Dd][Aa][Tt][Ee]))
-        updateFunc ${input[@]:1}
         ;;
     *)
         echo Invalid input.

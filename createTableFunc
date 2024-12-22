@@ -22,7 +22,7 @@ createTableFunc (){
             IFS=','
             read -a fields <<< $2
             echo ${fields[1]} #debug
-
+            IFS=' '
             # loop through fields
             for field in ${fields[@]}
             do
