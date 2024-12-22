@@ -206,7 +206,7 @@ select mode in MySQL Menu Exit; do
         ;;
     *)
         echo Invalid input.
-        ;;
+        ;;  
     esac
 done
 #echo $databaseInUse
