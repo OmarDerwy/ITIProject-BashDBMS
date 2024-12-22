@@ -2,17 +2,41 @@
 shopt -s extglob
 
 deleteSQL() {
-    if [[ $# -ne 6 ]]
-    then
+    if [[ $# -ne 6 ]]; then
         echo Invalid number of arguments.
-    else 
-        if [[ $1 =~ ^[fF][rR][oO][mM]$ ]]
-        then
-            if [[ -e $2 ]]
-            then
-                if [[ $3 =~ ^[wW][hH][eE][rR][eE]$ ]]
-                then 
-                    echo hello
+    else
+        if [[ $1 =~ ^[fF][rR][oO][mM]$ ]]; then
+            if [[ -e $2 ]]; then
+                if [[ $3 =~ ^[wW][hH][eE][rR][eE]$ ]]; then
+                    if [[ $5 =~ ^[=]$ ]]; then
+                        columnPosition=$(
+                        awk -v x="$4" '                                                                      
+						BEGIN{
+								FS=":"
+						}            
+						{              
+								if($1==x){print NR}
+						}                             
+													
+						' "$2"_metadata
+                    )
+                    lineNumber=$(awk -v x=$columnPosition -v y=$6 '
+							BEGIN{
+								FS=":"
+								
+							}
+							{
+								
+								if($x==y){
+								print NR
+							}
+							}
+							END{}
+							' $2)
+                    sed -i "$lineNumber"d $2
+                    else
+                        echo Invalid operator. Expected "=" operator.
+                    fi
                 else
                     echo Invalid syntax. Expected WHERE clause.
                 fi
@@ -23,5 +47,20 @@ deleteSQL() {
             echo Invalid syntax. Expected FROM clause.
         fi
     fi
+}
+
+deleteFunc(){
+    read -p "Please enter table name to delete from: " tableName
+	read -p "Please enter a condition: " condition 
+	if [[ -e $tableName ]]; then
+		if [[ $condition != "" ]]; then
+		deleteSQL FROM $tableName WHERE $condition
+        echo Row deleted successfully.
+		else 
+		    echo Error. Please specify a condition.
+		fi
+	else
+		echo Table $tableName does not exist
+	fi
 }
 
