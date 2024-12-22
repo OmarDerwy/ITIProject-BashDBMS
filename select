@@ -119,7 +119,7 @@ selectFunc() {
 	read -p "Please enter a condition (leave empty if there is none): " condition 
 	if [[ -e $tableName ]]; then
 		if [[ $condition != "" ]]; then
-		selectSQL $columnName FROM $tableName WHERE conditio
+		selectSQL $columnName FROM $tableName WHERE $condition
 		else 
 		selectSQL $columnName FROM $tableName 
 		fi

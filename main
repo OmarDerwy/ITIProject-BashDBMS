@@ -110,7 +110,7 @@ select mode in MySQL Menu Exit; do
         done
         ;;
     "Menu")
-        select option in "Select/Use Database" "Create Database" "Drop Database" "Rename Database" "Show Databases" "Create Table" "Drop Table" "Truncate Table" "Show Tables" "Exit"; do
+        select option in "Select/Use Database" "Create Database" "Drop Database" "Rename Database" "Show Databases" "Create Table" "Drop Table" "Truncate Table" "Show Tables" "Select Table" "Exit"; do
             case $option in
             "Select/Use Database")
                 if [[ $databaseInUseMenu != "" ]]; then
@@ -177,6 +177,13 @@ select mode in MySQL Menu Exit; do
             "Show Tables")
                 if [[ $databaseInUseMenu != "" ]]; then
                     showTablesFunc
+                else
+                    echo Please select a database first.
+                fi
+                ;;
+            "Select Table")
+                if [[ $databaseInUseMenu != "" ]]; then
+                    selectFunc
                 else
                     echo Please select a database first.
                 fi
