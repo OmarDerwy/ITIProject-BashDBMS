@@ -9,6 +9,8 @@ then
 else
     if [[ -d Databases/$2 ]]
     then
+        removedDatabase=$2
+        export $removedDatabase
         rm -r Databases/$2
         echo "Database $2 has been deleted."
     else

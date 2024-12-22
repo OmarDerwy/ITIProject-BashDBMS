@@ -6,15 +6,17 @@ renameDatabaseFuncSQL(){
     then
     echo Invalid number of Arguments.
     else
-        if [[ $1 =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]+$ ]] 
+        if [[ $1 =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]$ ]] 
         then 
-            if [[ $3 =~ ^[tT][oO]+$ ]]
+            if [[ $3 =~ ^[tT][oO]$ ]]
                 then
                 if [[ -d Databases/$2 ]]
                 then 
                     if [[ $4 =~ ^[a-zA-Z0-9]+$ ]]
                     then
                     mv Databases/$2 Databases/$4 
+                    newDatabaseName=$4
+                    export $newDatabaseName
                     echo Database $2 has been renamed to $4.
                     else
                     echo Special characters not allowed.

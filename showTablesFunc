@@ -1,15 +1,16 @@
 # !usr/bin/bash
 shopt -s extglob
 
-listDatabasesFuncSQL(){
+showTablesFuncSQL(){
     if [[ $# -ne 1 ]]
     then 
         echo Invalid number of arguments.
     else
-            ls Databases
+        ls | grep -v '_metadata$'
     fi
 }
 
-listDatabasesFunc(){
-    ls Databases;
+showTablesFunc(){
+    ls | grep -v '_metadata$'
+
 }
