@@ -28,19 +28,19 @@ do
         if [[ $databaseInUse != "" ]]
         then
             cd ../..
-            useFuncSQL ${@:2}
+            useFuncSQL ${input[@]:1}
             echo $databaseInUse
         else
-            useFuncSQL ${@:2}
+            useFuncSQL ${input[@]:1}
         fi
         ;;
     +([dD][rR][oO][pP]))
-    if [[ ${2} =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]$ ]]
+    if [[ ${input[1]} =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]$ ]]
     then
         if [[ $databaseInUse != "" ]]
         then
             cd ../..
-            dropDatabaseFuncSQL ${@:2}
+            dropDatabaseFuncSQL ${input[@]:1}
                 if [[ $removedDatabase = $databaseInUse ]]
                 then
                     databaseInUse=""
@@ -49,13 +49,13 @@ do
                 fi
 
         else
-            dropDatabaseFuncSQL ${@:2}
+            dropDatabaseFuncSQL ${input[@]:1}
         fi
-    elif [[ ${2} =~ ^[tT][aA][bB][lL][eE]$ ]]
+    elif [[ ${input[1]} =~ ^[tT][aA][bB][lL][eE]$ ]]
     then
         if [[ $databaseInUse != "" ]]
         then
-            dropTableFuncSQL ${@:2}
+            dropTableFuncSQL ${input[@]:1}
         else
             echo Please select a database first.
         fi
@@ -64,40 +64,40 @@ do
         if [[ $databaseInUse != "" ]]
         then
             cd ../..
-            renameDatabaseFuncSQL ${@:2}
+            renameDatabaseFuncSQL ${input[@]:1}
             databaseInUse=$newDatabaseName
             cd Databases/$databaseInUse
         else
-            renameDatabaseFuncSQL ${@:2}
+            renameDatabaseFuncSQL ${input[@]:1}
         fi
         ;;
     +([sS][hH][oO][wW]))
-        if [[ ${2} =~ ^[dD][aA][tT][aA][bB][aA][sS][eE][sS]$ ]]
+        if [[ ${input[1]} =~ ^[dD][aA][tT][aA][bB][aA][sS][eE][sS]$ ]]
         then
             if [[ $databaseInUse != "" ]]
             then
                 cd ../..
-                listDatabasesFuncSQL ${@:2}
+                listDatabasesFuncSQL ${input[@]:1}
                 cd Databases/$databaseInUse
             else
-                listDatabasesFuncSQL ${@:2}
+                listDatabasesFuncSQL ${input[@]:1}
             fi
-        elif [[ ${2} =~ ^[tT][aA][bB][lL][eE][sS]$ ]]
+        elif [[ ${input[1]} =~ ^[tT][aA][bB][lL][eE][sS]$ ]]
         then 
             if [[ $databaseInUse != "" ]]
             then
-                showTablesFuncSQL ${@:2}
+                showTablesFuncSQL ${input[@]:1}
             else
                 echo Please select a database first.
             fi
         fi
         ;;
     +([tT][rR][uU][nN][cC][aA][tT][eE]))
-        if [[ ${2} =~ ^[tT][aA][bB][lL][eE]$ ]]
+        if [[ ${input[1]} =~ ^[tT][aA][bB][lL][eE]$ ]]
         then
             if [[ $databaseInUse != "" ]]
             then
-                truncateTableSQL ${@:2}
+                truncateTableSQL ${input[@]:1}
             else
                 echo Please select a database first.
             fi
