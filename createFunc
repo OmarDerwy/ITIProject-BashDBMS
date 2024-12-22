@@ -13,7 +13,6 @@ createFunc() {
             mkdir Databases
             createDatabaseFunc ${@:2}
             fi
-
         fi
     elif [[ $1 =~ ^[tT][aA][bB][lL][eE]$ ]]; then
         if [[ $# -ne 3 ]]; then

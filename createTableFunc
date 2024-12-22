@@ -1,5 +1,6 @@
 #! /usr/bin/bash
 shopt -s extglob
+
 createTableFunc (){
     # echo $# # debug
     if [ $# -ne 2 ]; then
@@ -53,4 +54,53 @@ createTableFunc (){
             done
         fi
     fi
+}
+
+createTableWizard () {
+    read -p "Please enter the name of the table you want to create: " tableName
+    read -p "Please enter the number of columns: " columnNumber
+    declare -i counter=1
+    datatypes=()
+    names=()
+    pkFlag=0
+    for ((counter=1;$counter<=$columnNumber;counter++))
+    do
+        read -p "please enter name of column $counter: " names[$(($counter-1))]
+        echo "Please choose column datatype" 
+        select option in "int" "varchar"; do
+        case $option in
+            "int")
+                input="int"
+                answer=""
+                if [ $pkFlag -eq 0 ]; then
+                    until [[ $answer == @(y|ye|yes) || $answer == @(n|no) ]]; do
+                        read -p "Is this the primary key?(y/n)" answer
+                    done
+                    if [[ $answer == @(y|ye|yes) ]]; then
+                        input="int:pk"
+                        pkFlag=1
+                    fi
+                fi
+                datatypes+=("$input")
+                break
+                ;;
+            "varchar")
+                datatypes+=("varchar")
+                break
+                ;;
+            esac
+        done
+    done
+    # echo column names: ${names[@]}
+    # echo column datat: ${datatypes[@]}
+    funcParam=""
+    for ((counter=0;$counter<$columnNumber;counter++))
+    do
+        funcParam+=${names[$counter]}:${datatypes[$counter]},
+    done
+
+    databaseInUse=$databaseInUseMenu
+    echo Param: ${funcParam[@]::-1} #debug
+    createTableFunc $tableName ${funcParam[@]::-1}
+
 }

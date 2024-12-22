@@ -173,7 +173,7 @@ select mode in MySQL Menu Exit; do
                 fi
                 ;;
             "Create Table")
-                echo create table
+                createTableWizard
                 ;;
             "Drop Table")
                 if [[ $databaseInUseMenu != "" ]]; then
