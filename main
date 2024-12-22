@@ -10,6 +10,7 @@ source ./insertIntoFunc
 source ./truncateTableFunc
 source ./showTablesFunc
 source ./select
+source ./delete
 
 shopt -s extglob
 echo Welcome. Please choose a database mode.
@@ -103,6 +104,13 @@ select mode in MySQL Menu Exit; do
                     echo Please select a database first.
                 fi
                 ;;
+            +([dD][eE][lL][eE][tT][eE]))
+                if [[ $databaseInUse != "" ]]; then
+                    deleteSQL ${input[@]:1}
+                else
+                    echo Please select a database first.
+                fi
+                ;;
             *)
                 echo Invalid input.
                 ;;
@@ -110,7 +118,7 @@ select mode in MySQL Menu Exit; do
         done
         ;;
     "Menu")
-        select option in "Select/Use Database" "Create Database" "Drop Database" "Rename Database" "Show Databases" "Create Table" "Drop Table" "Truncate Table" "Show Tables" "Select Table" "Exit"; do
+        select option in "Select/Use Database" "Create Database" "Drop Database" "Rename Database" "Show Databases" "Create Table" "Drop Table" "Truncate Table" "Show Tables" "Select Table" "Delete From Table" "Exit"; do
             case $option in
             "Select/Use Database")
                 if [[ $databaseInUseMenu != "" ]]; then
@@ -188,6 +196,13 @@ select mode in MySQL Menu Exit; do
                     echo Please select a database first.
                 fi
                 ;;
+            "Delete From Table")
+                if [[ $databaseInUseMenu != "" ]]; then
+                    deleteFunc
+                else
+                    echo Please select a database first.
+                fi
+                ;;
             "Exit")
                 exit
                 ;;
@@ -206,7 +221,7 @@ select mode in MySQL Menu Exit; do
         ;;
     *)
         echo Invalid input.
-        ;;  
+        ;;
     esac
 done
 #echo $databaseInUse

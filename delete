@@ -33,7 +33,12 @@ deleteSQL() {
 							}
 							END{}
 							' $2)
+                    if [[ $lineNumber != "" ]]; then
                     sed -i "$lineNumber"d $2
+                    echo Row deleted sucessfully.
+                    else
+                    echo Row does not exist.
+                    fi
                     else
                         echo Invalid operator. Expected "=" operator.
                     fi
@@ -55,7 +60,6 @@ deleteFunc(){
 	if [[ -e $tableName ]]; then
 		if [[ $condition != "" ]]; then
 		deleteSQL FROM $tableName WHERE $condition
-        echo Row deleted successfully.
 		else 
 		    echo Error. Please specify a condition.
 		fi
