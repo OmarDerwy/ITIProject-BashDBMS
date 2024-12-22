@@ -2,9 +2,26 @@
 shopt -s extglob
 
 deleteSQL() {
-    
+    if [[ $# -ne 6 ]]
+    then
+        echo Invalid number of arguments.
+    else 
+        if [[ $1 =~ ^[fF][rR][oO][mM]$ ]]
+        then
+            if [[ -e $2 ]]
+            then
+                if [[ $3 =~ ^[wW][hH][eE][rR][eE]$ ]]
+                then 
+                    echo hello
+                else
+                    echo Invalid syntax. Expected WHERE clause.
+                fi
+            else
+                echo Database $2 does not exist.
+            fi
+        else
+            echo Invalid syntax. Expected FROM clause.
+        fi
+    fi
 }
 
-delete() {
-   
-}
