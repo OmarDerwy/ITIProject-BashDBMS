@@ -4,7 +4,7 @@ shopt -s extglob
 funcValidation() {
     echo $@ # debug
     errorFlag=1
-    if [ $# -ne $(($1+1)) ]; then
+    if [ $# -lt $(($1+1)) ]; then
         echo Invalid number of arguments
     elif [ -z $databaseInUse ]; then
         echo 'Please choose a database first!'

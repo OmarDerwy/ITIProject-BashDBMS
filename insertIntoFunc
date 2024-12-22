@@ -8,26 +8,25 @@ insertIntoFunc () {
         echo Critical error in function! Aborting...
     else
         echo function reached!!! #debug
-        
-        IFS=','
-        read -a fields <<< $2
 
-        while IFS= read -r line; do
-            field=$(echo "$line" | cut -d: -f1)
-            if [[ -n "$field" ]]; then
-                for inField in $fields
-                do
-                    echo infield: $inField
-                    fieldName=`cut -d: -f1 <<< $inField`
-                        if [ $field == $fieldName ]; then
-                            echo field: $field
-                            echo field name: $fieldName
-                            break
-                        fi
-                done
-                echo $inField
-            fi
-        done < $1"_metadata"
+        for item in ${@:2}
+        do
+        echo $item
+        done
+
+
+        # for inField in $fields
+        # do
+        #     echo infield: $inField
+        #     fieldName=`cut -d: -f1 <<< $inField`
+        #         if [ $field == $fieldName ]; then
+        #             echo field: $field
+        #             echo field name: $fieldName
+        #             break
+        #         fi
+        # done
+        # echo $inField
+   
 
 
 
