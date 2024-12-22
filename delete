@@ -1,0 +1,10 @@
+#! /usr/bin/bash
+shopt -s extglob
+
+deleteSQL() {
+    
+}
+
+delete() {
+   
+}
