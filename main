@@ -15,14 +15,13 @@ shopt -s extglob
 declare -i exit=0
 until [[ $exit -eq 1 ]]
 do 
-    read -p "> " input
-    eval "set -- $input"
-    case $1 in
+    read -p "> " -a input
+    case ${input[0]} in
     +([Ee][Xx][Ii][Tt]))
         exit
         ;;
     +([cC][rR][eE][aA][tT][eE]))
-        createFunc ${@:2}
+        createFunc ${input[@]:1}
         ;;
     +([uU][sS][eE]))
         if [[ $databaseInUse != "" ]]
@@ -35,29 +34,30 @@ do
         fi
         ;;
     +([dD][rR][oO][pP]))
-    if [[ ${input[1]} =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]$ ]]
-    then
-        if [[ $databaseInUse != "" ]]
+        if [[ ${input[1]} =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]$ ]]
         then
-            cd ../..
-            dropDatabaseFuncSQL ${input[@]:1}
-                if [[ $removedDatabase = $databaseInUse ]]
-                then
-                    databaseInUse=""
-                else
-                    cd Databases/$databaseInUse
-                fi
+            if [[ $databaseInUse != "" ]]
+            then
+                cd ../..
+                dropDatabaseFuncSQL ${input[@]:1}
+                    if [[ $removedDatabase = $databaseInUse ]]
+                    then
+                        databaseInUse=""
+                    else
+                        cd Databases/$databaseInUse
+                    fi
 
-        else
-            dropDatabaseFuncSQL ${input[@]:1}
-        fi
-    elif [[ ${input[1]} =~ ^[tT][aA][bB][lL][eE]$ ]]
-    then
-        if [[ $databaseInUse != "" ]]
+            else
+                dropDatabaseFuncSQL ${input[@]:1}
+            fi
+        elif [[ ${input[1]} =~ ^[tT][aA][bB][lL][eE]$ ]]
         then
-            dropTableFuncSQL ${input[@]:1}
-        else
-            echo Please select a database first.
+            if [[ $databaseInUse != "" ]]
+            then
+                dropTableFuncSQL ${input[@]:1}
+            else
+                echo Please select a database first.
+            fi
         fi
         ;;
     +([rR][eE][nN][aA][mM][eE]))
@@ -104,7 +104,7 @@ do
         fi
         ;;
     +([Ii][Nn][Ss][Ee][Rr][Tt]))
-        insertIntoFunc ${@:2}
+        insertIntoFunc ${input[@]:1}
         ;;
     *)
         echo Invalid input.

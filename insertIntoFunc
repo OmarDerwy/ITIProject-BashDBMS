@@ -3,49 +3,38 @@ shopt -s extglob
 source ./globFuncs
 insertIntoFunc () {
     echo $# #debug
-    funcValidation 2 $@ 
+    funcValidationMI 2 $@ 
     if [ $? -eq 1 ]; then
         echo Critical error in function! Aborting...
     else
         echo function reached!!! #debug
-        
-        IFS=','
-        read -a fields <<< $2
 
+        #TODO Need to add a auto increment for PK
         while IFS= read -r line; do
-            field=$(echo "$line" | cut -d: -f1)
-            if [[ -n "$field" ]]; then
-                for inField in $fields
-                do
-                    echo infield: $inField
-                    fieldName=`cut -d: -f1 <<< $inField`
-                        if [ $field == $fieldName ]; then
-                            echo field: $field
-                            echo field name: $fieldName
-                            break
-                        fi
-                done
-                echo $inField
+            flag=0
+            declare out
+            existingField=$(echo "$line" | cut -d: -f1) 
+            # echo "Existing Field: $existingField" #debug
+            for inputField in ${@:2}
+            do
+                # echo Input field: $inputField #debug
+                inputFieldName=`cut -d: -f1 <<< $inputField`
+                    if [ $existingField == $inputFieldName ]; then
+                        # echo Check #debug
+                        inputFieldData=`cut -d: -f2 <<< $inputField`
+                        flag=1
+                        out+=$inputFieldData":"
+                        break
+                    fi
+            done
+            if [ $flag -eq 0 ]; then
+                out+=:
             fi
-        done < $1"_metadata"
+        done < "$1"_metadata
+        out=${out::-1}
+        echo $out >> $1
+        echo Record $out has been inserted into the table # debug
 
-
-
-        # for field in $fieldElements
-        # do
-        #     echo field: $field
-        #     for inField in $fields
-        #     do
-        #         echo infield: $inField
-        #         fieldName=`cut -d: -f1 <<< $inField`
-        #         if [ $field == $fieldName ]; then
-        #             echo field: $field
-        #             echo field name: $fieldName
-        #             break
-        #         fi
-        #     done
-        #     echo $inField
-        # done
     fi
 
 
@@ -59,8 +48,8 @@ insertIntoFunc () {
     #             break
     #         else
     #             # prepare input validation variables
-    #             fieldName=`cut -d: -f1 <<< $field`
-    #             recordedDatatype=`sed -n "/${fieldName}/p" "$1"_metadata | cut -d: -f2`
+    #             inputFieldName=`cut -d: -f1 <<< $field`
+    #             recordedDatatype=`sed -n "/${inputFieldName}/p" "$1"_metadata | cut -d: -f2`
                 
     #             # prepare data
     #             data=`cut -d: -f2 <<< $field`
