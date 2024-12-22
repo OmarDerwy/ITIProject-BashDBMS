@@ -9,7 +9,7 @@ insertIntoFunc () {
     else
         echo function reached!!! #debug
 
-        #TODO Need to add a auto increment for PK
+        #TODO Need to add an auto increment for PK
         while IFS= read -r line; do
             flag=0
             declare out

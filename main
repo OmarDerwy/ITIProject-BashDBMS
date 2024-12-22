@@ -9,6 +9,7 @@ source ./dropTableFunc
 source ./insertIntoFunc
 source ./truncateTableFunc
 source ./showTablesFunc
+source ./updateFunc
 
 shopt -s extglob
 
@@ -105,6 +106,9 @@ do
         ;;
     +([Ii][Nn][Ss][Ee][Rr][Tt]))
         insertIntoFunc ${input[@]:1}
+        ;;
+    +([Uu][Pp][Dd][Aa][Tt][Ee]))
+        updateFunc ${input[@]:1}
         ;;
     *)
         echo Invalid input.

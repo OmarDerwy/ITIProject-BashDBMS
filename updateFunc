@@ -1,0 +1,99 @@
+#! /usr/bin/bash
+
+updateFunc(){
+    echo $# #debug
+    funcValidationMI 2 $@ 
+    if [ $? -eq 1 ]; then
+        echo Critical error in function! Aborting...
+    else
+        # echo function reached!!! #debug
+        table_name=$1
+        shift 1
+        fields=()
+        whereClause=()
+        declare -i whereClauseFlag=0
+        while [[ $# -gt 0 ]];
+        do
+            if [[ ! $1 =~ ^[Ww][Hh][Ee][Rr][Ee]$ && $whereClauseFlag -eq 0 ]]; then
+                fields+=("$1")
+                shift 1
+            else
+                whereClauseFlag=1
+                whereClause+=("$1")
+                shift 1
+            fi
+        done
+        whereClause=${whereClause[1]}
+        # echo WHERE CLAUSE: $whereClause
+        whereField=$(awk -F ":" '{print $1}' <<< "$whereClause")
+        whereData=$(awk -F ":" '{print $2}' <<< "$whereClause")
+        # echo Fields: ${fields[@]}
+        # echo Where Field: $whereField
+        # echo Where Data:  $whereData #debug
+
+        columnPosition=$(
+                        awk -v metaField="$whereField" '
+                        BEGIN{
+                                FS=":"
+                        }
+                        {
+                                if($1==metaField){print NR}
+                        }
+
+                        ' "$table_name"_metadata
+                    )
+        
+        rowData=$(awk -v metaField=$columnPosition -v whereData=$whereData '
+                        BEGIN{
+                            FS=":"
+                        }
+                        {
+                            if($metaField==whereData){
+                                print $1
+                            }
+
+                        }
+                        END{}
+                            ' $table_name)
+        rowDataArr=()
+        # IFS=' ' read -ra rowData <<< "$rowData"
+        for ids in $rowData; do
+            rowDataArr+=("$ids")
+        done
+        # echo Row Data: $rowData #debug
+        # echo Row Data: ${rowDataArr[1]} #debug
+        
+        declare -i columnNo=0
+        awk 'BEGIN{FS=":"} {print $1}' $table_name"_metadata" | while IFS= read -r existingField;
+        do # This gets you from metadata field by field
+            columnNo+=1
+            # echo $existingField
+            for inputField in ${fields[@]} # this gets you input fields by user
+            do
+                # echo Input field: $inputField #debug
+                inputFieldName=`cut -d: -f1 <<< $inputField`
+                    if [ $existingField == $inputFieldName ]; then
+                        # echo Check #debug
+                        inputFieldData=`cut -d: -f2 <<< $inputField`
+                        # echo $inputFieldData $columnNo
+                        awk -i inplace -v ids="$rowData" -v col="$columnNo" -v ifd="$inputFieldData" 'BEGIN{
+                            FS=":"
+                            OFS=":"
+                            split(ids, arr, " ")
+                        }{
+                            for(id in arr){
+                                if(arr[id] == $1)
+                                {
+                                    $col=ifd
+                                }
+                            }
+                            print
+                        }' $table_name
+                        echo $inputFieldData has replaced data in fields where $whereClause
+                        break
+                    fi
+            done
+        done
+        
+    fi
+}
