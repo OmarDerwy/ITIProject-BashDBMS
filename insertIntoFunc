@@ -2,12 +2,12 @@
 shopt -s extglob
 source ./globFuncs
 insertIntoFunc () {
-    echo $# #debug
+    # echo $# #debug
     funcValidationMI 2 $@ 
     if [ $? -eq 1 ]; then
         echo Critical error in function! Aborting...
     else
-        echo function reached!!! #debug
+        # echo function reached!!! #debug
 
         #TODO Need to add an auto increment for PK
         while IFS= read -r line; do
@@ -67,4 +67,29 @@ insertIntoFunc () {
     #         fi
     #     done
     # fi
+}
+
+insertIntoWizard () {
+    read -p "Please enter the name of the table you want to insert to: " tableName
+    read -p "Please enter the number of columns: " columnNumber
+    declare -i counter=1
+    data=()
+    names=()
+    for ((counter=1;$counter<=$columnNumber;counter++))
+    do
+        read -p "please enter name of column $counter: " names[$(($counter-1))]
+        read -p "Please enter the data: " data[$(($counter-1))]
+    done
+    echo column names: ${names[@]}
+    echo column datat: ${data[@]}
+    funcParam=""
+    for ((counter=0;$counter<$columnNumber;counter++))
+    do
+        funcParam+=${names[$counter]}:${data[$counter]}' '
+    done
+
+    databaseInUse=$databaseInUseMenu
+    # echo Param: ${funcParam[@]::-1} #debug
+    insertIntoFunc $tableName ${funcParam[@]::-1}
+
 }
