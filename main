@@ -103,6 +103,9 @@ do
             fi
         fi
         ;;
+    +([Ii][Nn][Ss][Ee][Rr][Tt]))
+        insertIntoFunc ${@:2}
+        ;;
     *)
         echo Invalid input.
     esac

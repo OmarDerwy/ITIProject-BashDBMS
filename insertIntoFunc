@@ -8,5 +8,74 @@ insertIntoFunc () {
         echo Critical error in function! Aborting...
     else
         echo function reached!!! #debug
+        
+        IFS=','
+        read -a fields <<< $2
+
+        while IFS= read -r line; do
+            field=$(echo "$line" | cut -d: -f1)
+            if [[ -n "$field" ]]; then
+                for inField in $fields
+                do
+                    echo infield: $inField
+                    fieldName=`cut -d: -f1 <<< $inField`
+                        if [ $field == $fieldName ]; then
+                            echo field: $field
+                            echo field name: $fieldName
+                            break
+                        fi
+                done
+                echo $inField
+            fi
+        done < $1"_metadata"
+
+
+
+        # for field in $fieldElements
+        # do
+        #     echo field: $field
+        #     for inField in $fields
+        #     do
+        #         echo infield: $inField
+        #         fieldName=`cut -d: -f1 <<< $inField`
+        #         if [ $field == $fieldName ]; then
+        #             echo field: $field
+        #             echo field name: $fieldName
+        #             break
+        #         fi
+        #     done
+        #     echo $inField
+        # done
     fi
+
+
+
+    #         # prepare validation variables
+    #         colonNum=`grep -o ":" <<< $field | wc -l`
+
+    #         # validate that each fields specifies a datatype
+    #         if [ $colonNum -ne 1 ]; then
+    #             echo 'Follow this example: [field name]:[data]'
+    #             break
+    #         else
+    #             # prepare input validation variables
+    #             fieldName=`cut -d: -f1 <<< $field`
+    #             recordedDatatype=`sed -n "/${fieldName}/p" "$1"_metadata | cut -d: -f2`
+                
+    #             # prepare data
+    #             data=`cut -d: -f2 <<< $field`
+
+    #             # validate
+    #             if [ -z $recordedDatatype ]; then
+    #                 echo "The provided field name doesn't exist. Please try again."
+    #             elif [ $recordedDatatype = "int" ]; then
+    #                 if [[ $data =~ ^\s*-?[0-9]{1,}\s*$ ]]; then
+    #                     echo $field >> $1
+    #                 else
+    #                     echo The field you are trying to insert into requires an integer
+    #                 fi
+    #             fi
+    #         fi
+    #     done
+    # fi
 }
