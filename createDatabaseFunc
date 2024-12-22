@@ -9,3 +9,8 @@ createDatabaseFunc(){
         echo Database created sucessfully!
     fi
 }
+
+createDatabaseWizard(){
+    read -p "Please enter database name: " databaseName
+    createDatabaseFunc $databaseName
+}

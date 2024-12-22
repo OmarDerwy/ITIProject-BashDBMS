@@ -137,7 +137,7 @@ select mode in MySQL Menu Exit; do
                 fi
                 ;;
             "Create Database")
-                echo create db
+                createDatabaseWizard
                 ;;
             "Drop Database")
                 if [[ $databaseInUseMenu != "" ]]; then
