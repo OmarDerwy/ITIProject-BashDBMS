@@ -9,6 +9,7 @@ source ./dropTableFunc
 source ./insertIntoFunc
 source ./truncateTableFunc
 source ./showTablesFunc
+source ./select
 
 shopt -s extglob
 echo Welcome. Please choose a database mode.
@@ -93,6 +94,13 @@ select mode in MySQL Menu Exit; do
                     else
                         echo Please select a database first.
                     fi
+                fi
+                ;;
+            +([sS][eE][lL][eE][cC][tT]))
+                if [[ $databaseInUse != "" ]]; then
+                    selectSQL ${input[@]:1}
+                else
+                    echo Please select a database first.
                 fi
                 ;;
             *)
