@@ -97,3 +97,30 @@ updateFunc(){
         
     fi
 }
+
+updateTableWizard (){
+
+    read -p "Please enter the name of the table you want to update to: " tableName
+    read -p "Please enter the number of columns to update: " columnNumber
+    declare -i counter=1
+    data=()
+    names=()
+    for ((counter=1;$counter<=$columnNumber;counter++))
+    do
+        read -p "please enter name of column $counter: " names[$(($counter-1))]
+        read -p "Please enter the data: " data[$(($counter-1))]
+    done
+    read -p "Please enter condition in this format [field]:[value]: " condition
+    echo column names: ${names[@]}
+    echo column datat: ${data[@]}
+    funcParam=""
+    for ((counter=0;$counter<$columnNumber;counter++))
+    do
+        funcParam+=${names[$counter]}:${data[$counter]}' '
+    done
+
+    databaseInUse=$databaseInUseMenu
+    # echo Param: $tableName ${funcParam[@]::-1} WHERE $condition #debug
+    updateFunc $tableName ${funcParam[@]::-1} WHERE $condition
+
+}

@@ -125,7 +125,7 @@ select mode in MySQL Menu Exit; do
         done
         ;;
     "Menu")
-        select option in "Select/Use Database" "Create Database" "Drop Database" "Rename Database" "Show Databases" "Create Table" "Insert Into Table" "Drop Table" "Truncate Table" "Show Tables" "Select Table" "Delete From Table" "Exit"; do
+        select option in "Select/Use Database" "Create Database" "Drop Database" "Rename Database" "Show Databases" "Create Table" "Insert Into Table" "Update Table" "Drop Table" "Truncate Table" "Show Tables" "Select Table" "Delete From Table" "Exit"; do
             case $option in
             "Select/Use Database")
                 if [[ $databaseInUseMenu != "" ]]; then
@@ -177,6 +177,9 @@ select mode in MySQL Menu Exit; do
                 ;;
             "Insert Into Table")
                 insertIntoWizard
+                ;;
+            "Update Table")
+                updateTableWizard
                 ;;
             "Drop Table")
                 if [[ $databaseInUseMenu != "" ]]; then
