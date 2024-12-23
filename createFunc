@@ -5,6 +5,8 @@ createFunc() {
     if [[ $1 =~ ^[dD][aA][tT][aA][bB][aA][sS][eE]$ ]]; then
         if [[ $# -ne 2 ]]; then
             echo 'Invalid number of arguments.'
+        elif [[ -n $databaseInUse ]]; then
+            echo Cannot create database while another one is in use.
         else
             if [[ -d Databases ]]
             then
