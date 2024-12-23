@@ -44,15 +44,12 @@ insertIntoFunc () {
         echo Critical error in function! Aborting...
     else
         # echo function reached!!! #debug
-        pkVar=0
+        # echo pk function $pkVar
+        columnNo=1
         while IFS= read -r line; do
             # echo boring function
             flag=0
             declare out
-            if [[ "$pkVar" -eq 0 ]]; then
-                pkVar=$(awk -F: '{if($3 == "pk"){print NR}}' <<< $line)
-                echo pk function $pkVar
-            fi
             existingField=$(echo "$line" | cut -d: -f1) 
             # echo "Existing Field: $existingField" #debug
             for inputField in ${fields[@]}
@@ -72,6 +69,7 @@ insertIntoFunc () {
             fi
         done < "$table_name"_metadata
         out=${out::-1}
+        pkVar=$(awk -F: '{if($3 == "pk"){print NR}}' "$table_name"_metadata)
         lastIter=$(awk -v pkVar=$pkVar -F: 'END {print $pkVar}' $table_name)
         out=$(awk -v pkVar=$pkVar -v lastIter=$lastIter -F: 'BEGIN{OFS=":"}{$pkVar = lastIter+1 ; print $0}' <<< $out)
         echo $out >> $table_name
