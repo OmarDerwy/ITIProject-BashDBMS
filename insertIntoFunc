@@ -9,7 +9,6 @@ insertIntoFunc () {
     faultFlag=0
     while [[ $# -gt 0 ]];
     do
-        # echo while function
         fields+=("$1")
         # verification variables
         inputFieldName=$(awk -F: '{print $1}' <<< $1)

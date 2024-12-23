@@ -1,28 +1,56 @@
 #! /usr/bin/bash
 
 updateFunc(){
-    echo $# #debug
-    funcValidationMI 2 $@ 
-    if [ $? -eq 1 ]; then
+    table_name=$1
+    shift 1
+    fields=()
+    whereClause=()
+    faultFlag=0
+    declare -i whereClauseFlag=0
+    while [[ $# -gt 0 ]];
+    do
+        if [[ ! $1 =~ ^[Ww][Hh][Ee][Rr][Ee]$ && $whereClauseFlag -eq 0 ]]; then
+            fields+=("$1")
+            # verification variables
+            inputFieldName=$(awk -F: '{print $1}' <<< $1)
+            data=$(awk -F: '{print $2}' <<< $1)
+            recordedDatatype=$(awk -v name=$inputFieldName -F: '{if(name == $1) print $2}' "$table_name"_metadata)
+            isPk=$(awk -v name=$inputFieldName -F: '{if(name == $1) print $3}' "$table_name"_metadata)
+            declare -A seen
+            # debug
+            # echo input: $inputFieldName record: $recordedDatatype data: $data
+            # check for duplicates
+            if [[ -n "${seen[$inputFieldName]}" ]]; then
+                echo "Please take care to avoid duplications"
+                faultFlag=1
+            # other validations
+            elif [[ $isPk == "pk" ]]; then
+                faultFlag=1
+                echo You cannot modify a primary key
+            elif [[ -z $recordedDatatype ]]; then
+                faultFlag=1
+                echo "The provided field name doesn't exist. Please try again."
+            elif [[ $recordedDatatype == "int" ]]; then
+                echo I am HERE
+                if [[ ! $data =~ ^\s*-?[0-9]{1,}\s*$ ]]; then
+                    faultFlag=1
+                    echo The field you are trying to insert into requires an integer
+                fi
+            fi
+            seen[$inputFieldName]=1
+            shift 1
+        else
+            whereClauseFlag=1
+            whereClause+=("$1")
+            shift 1
+        fi
+    done
+    # echo $# #debug
+    funcValidationMI 2 $table_name ${fields[@]} ${whereClause[@]} 
+    if [ $? -eq 1 -o $faultFlag -eq 1 -o -z $whereClause ]; then
         echo Critical error in function! Aborting...
     else
         # echo function reached!!! #debug
-        table_name=$1
-        shift 1
-        fields=()
-        whereClause=()
-        declare -i whereClauseFlag=0
-        while [[ $# -gt 0 ]];
-        do
-            if [[ ! $1 =~ ^[Ww][Hh][Ee][Rr][Ee]$ && $whereClauseFlag -eq 0 ]]; then
-                fields+=("$1")
-                shift 1
-            else
-                whereClauseFlag=1
-                whereClause+=("$1")
-                shift 1
-            fi
-        done
         whereClause=${whereClause[1]}
         # echo WHERE CLAUSE: $whereClause
         whereField=$(awk -F ":" '{print $1}' <<< "$whereClause")
